@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2022-2023 ZnPi
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.9</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>me.pi.admin</groupId>
+    <artifactId>pi-admin</artifactId>
+    <version>${revision}</version>
+
+    <name>pi-admin</name>
+    <url>https://jiabin.williamalec.top/</url>
+    <description>pi-admin 是基于 Spring Boot 2.7.9、MyBatis-Plus、Spring Security 等主流技术栈构建的后台管理系统。
+    </description>
+
+    <modules>
+        <module>pi-boot</module>
+        <module>pi-common</module>
+        <module>pi-core</module>
+        <module>pi-workflow</module>
+    </modules>
+
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <java.version>1.8</java.version>
+
+        <flowable.version>6.8.0</flowable.version>
+
+        <springdoc.version>1.6.15</springdoc.version>
+        <jjwt.version>0.11.5</jjwt.version>
+
+        <druid.version>1.2.8</druid.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <p6spy.version>3.9.1</p6spy.version>
+
+        <hutool.version>5.8.15</hutool.version>
+        <captcha.version>2.2.2</captcha.version>
+        <fastjson2.version>2.0.12</fastjson2.version>
+        <easyexcel.verion>3.1.1</easyexcel.verion>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
+
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+                <logging.level>DEBUG</logging.level>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+                <logging.level>DEBUG</logging.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+                <logging.level>WARN</logging.level>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2-extension</artifactId>
+            <version>${fastjson2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>${easyexcel.verion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter-actuator</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.pig4cloud.plugin</groupId>
+                <artifactId>captcha-spring-boot-starter</artifactId>
+                <version>${captcha.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-extra</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>me.pi.admin</groupId>
+                <artifactId>pi-common-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>me.pi.admin</groupId>
+                <artifactId>pi-common-serialization</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>me.pi.admin</groupId>
+                <artifactId>pi-common-mybatis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>me.pi.admin</groupId>
+                <artifactId>pi-workflow</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>me.pi.admin</groupId>
+                <artifactId>pi-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>me.pi.admin</groupId>
+                <artifactId>pi-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>me.pi.admin</groupId>
+                <artifactId>pi-system</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <!-- enable flattening -->
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <!-- ensure proper cleanup -->
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>8</source>
+                        <target>8</target>
+                        <!-- 请参阅 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
+                        <!-- 类路径元素作为注解处理器路径提供。
+                             如果指定了，编译器将只在那些类路径元素中检测注释处理器。
+                             如果省略，默认类路径将用于检测注释处理器。
+                             检测本身依赖于 annotationProcessors 的配置。根据本文档，不考虑提供的依赖处理器!
+                        -->
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 关闭过滤 -->
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 引入所有 匹配文件进行过滤 -->
+                <includes>
+                    <include>application*</include>
+                    <include>bootstrap*</include>
+                    <include>banner*</include>
+                </includes>
+                <!-- 启用过滤 即该资源中的变量将会被过滤器中的值替换 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

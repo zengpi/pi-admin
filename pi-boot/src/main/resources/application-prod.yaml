@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/pi-admin-test?characterEncoding=UTF-8&nullCatalogMeansCurrent=true
+    username: root
+    password: root
+  redis:
+    host: localhost
+    password: 123456

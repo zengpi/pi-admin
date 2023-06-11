@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2022-2023 ZnPi
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.pi.admin.core.system.mapper.RoleMapper">
+    <select id="listRoleByUserId" resultType="me.pi.admin.core.system.pojo.po.SysRole">
+        SELECT sr.id,
+               sr.role_code
+        FROM sys_role sr
+                 INNER JOIN
+             sys_user_role sur on sr.id = sur.role_id
+        WHERE sur.user_id = #{id}
+    </select>
+
+    <select id="listRoleByUsername" resultType="me.pi.admin.core.system.pojo.po.SysRole">
+        SELECT sr.id,
+               sr.role_code,
+               sr.role_scope
+        FROM sys_role sr
+                 INNER JOIN
+             sys_user_role sur on sr.id = sur.role_id
+                 LEFT JOIN sys_user su on sur.user_id = su.id
+        WHERE su.username = #{username}
+    </select>
+
+    <select id="listRoleByUsernameAndTenantId" resultType="me.pi.admin.core.system.pojo.po.SysRole">
+        SELECT sr.id,
+               sr.role_code,
+               sr.role_scope
+        FROM sys_role sr
+                 INNER JOIN
+             sys_user_role sur on sr.id = sur.role_id
+                 LEFT JOIN sys_user su on sur.user_id = su.id
+        WHERE su.username = #{username}
+          AND sr.tenant_id = #{tenantId}
+          AND su.tenant_id = #{tenantId}
+    </select>
+
+    <select id="getMenuIdsByRoleId" resultType="java.lang.Long">
+        SELECT sm.id
+        FROM sys_menu sm
+                 LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
+        WHERE deleted = 0
+          AND role_id = #{roleId}
+          AND has_children = 0
+    </select>
+    <select id="getTenantAdmin" resultType="me.pi.admin.core.system.pojo.po.SysRole">
+        SELECT *
+        FROM sys_role
+        WHERE role_code = 'ADMIN'
+          AND tenant_id = #{tenantCode}
+    </select>
+    <select id="selectByTenantId" resultType="me.pi.admin.core.system.pojo.po.SysRole">
+        SELECT id, role_code
+        FROM sys_role
+        WHERE tenant_id = #{tenantId}
+    </select>
+
+    <delete id="deleteByTenantIds">
+        UPDATE sys_role SET deleted = NULL
+        WHERE
+        <foreach item="item" index="index" collection="tenantIds"
+                 open="tenant_id in (" separator="," close=")" nullable="true">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

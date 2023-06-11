@@ -1,0 +1,66 @@
+server:
+  port: 9317
+
+spring:
+  profiles:
+    active: '@profiles.active@'
+  cache:
+    type: redis
+
+logging:
+  level:
+    me.pi.admin: '@logging.level@'
+    org.springframework: warn
+
+# MyBatisPlus配置
+# https://baomidou.com/pages/56bac0/#typealiasespackage
+mybatis-plus:
+  mapper-scan: me.pi.admin.**.mapper
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: "null"
+      logic-not-delete-value: 0
+
+auth:
+  # 验证码
+  code:
+    # 验证码超时时间（单位：s）
+    timeout: 300
+    # 验证码宽度
+    width: 100
+    # 验证码高度
+    height: 32
+  jwt:
+    # token 过期时间（单位：s）
+    expire: 14400
+    # 续期阈值（单位：s），当过期时间小于此阈值时，如果用户操作了，则进行续期
+    renewal-threshold: 1800
+    # 续期时间（单位：s）
+    renewal-time: 3600
+    # token 秘钥
+    secret: Hp8Bmjl7ohJn5iSH+fcqW6/8bL4lLUM0gUvgk6oECu6SQCa7LJc4qFk8PHwrAg/enV1Xk7AILEqO8ST1cOVlHg==
+
+springdoc:
+  version: '@revision@'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: flowable,info
+
+flowable:
+  # 是否需要自动部署流程定义。
+  check-process-definitions: false
+  cmmn:
+    enabled: false
+  content:
+    enabled: false
+  dmn:
+    enabled: false
+  form:
+    enabled: false
+  idm:
+    enabled: false

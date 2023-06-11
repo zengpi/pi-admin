@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2022-2023 ZnPi
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.pi.admin.core.system.mapper.TenantMapper">
+
+    <resultMap id="BaseResultMap" type="me.pi.admin.core.system.pojo.po.SysTenant">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="BIGINT"/>
+        <result property="enterpriseName" column="enterprise_name" jdbcType="VARCHAR"/>
+        <result property="tenantAdminId" column="tenant_admin_id" jdbcType="BIGINT"/>
+        <result property="tenantAdmin" column="tenant_admin" jdbcType="VARCHAR"/>
+        <result property="tenantAccount" column="tenant_account" jdbcType="VARCHAR"/>
+        <result property="packageId" column="package_id" jdbcType="BIGINT"/>
+        <result property="expires" column="expires" jdbcType="TIMESTAMP"/>
+        <result property="userQuantity" column="user_quantity" jdbcType="BIGINT"/>
+        <result property="enabled" column="enabled" jdbcType="TINYINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+        <result property="remark" column="remark" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,update_time,
+        create_by,update_by,enterprise_id,
+        enterprise_name,tenant_admin_id,tenant_admin,
+        tenant_account,package_id,expires,
+        user_quantity,enabled,deleted,
+        remark
+    </sql>
+
+    <select id="getTenantsByUsername" resultType="me.pi.admin.core.system.pojo.po.SysTenant">
+        SELECT tenant_code, enterprise_name
+        FROM sys_user su
+                 INNER JOIN sys_tenant st ON su.tenant_id = st.tenant_code
+        WHERE su.deleted = 0
+          AND st.deleted = 0
+          AND su.username = #{username}
+    </select>
+    <select id="selectPageTenantsByCondition" resultType="me.pi.admin.core.system.pojo.vo.TenantVO">
+        SELECT st.id, st.create_time, st.tenant_code, st.enterprise_name, st.contact, st.account, st.phone,
+        st.email, st.package_id, sp.name package_name, st.expires, st.user_quantity, st.enabled, st.remark
+        FROM sys_tenant st
+        LEFT JOIN sys_package sp ON st.package_id = sp.id
+        WHERE
+        st.deleted = 0
+        <if test="query.keyWord != null and query.keyWord != ''">
+            AND st.tenant_code LIKE CONCAT('%', #{query.keyWord}, '%')
+            OR st.enterprise_name LIKE CONCAT('%', #{query.keyWord}, '%')
+            OR sp.name LIKE CONCAT('%', #{query.keyWord}, '%')
+        </if>
+        ORDER BY st.create_time DESC
+    </select>
+</mapper>

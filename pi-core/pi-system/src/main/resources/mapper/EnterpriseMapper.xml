@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2022-2023 ZnPi
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.pi.admin.core.system.mapper.EnterpriseMapper">
+
+    <resultMap id="BaseResultMap" type="me.pi.admin.core.system.pojo.po.SysEnterprise">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="usci" column="usci" jdbcType="VARCHAR"/>
+            <result property="registeredCurrency" column="registered_currency" jdbcType="VARCHAR"/>
+            <result property="registeredCapital" column="registered_capital" jdbcType="VARCHAR"/>
+            <result property="legalPerson" column="legal_person" jdbcType="VARCHAR"/>
+            <result property="establishingTime" column="establishing_time" jdbcType="TIMESTAMP"/>
+            <result property="businessNature" column="business_nature" jdbcType="VARCHAR"/>
+            <result property="industryInvolved" column="industry_involved" jdbcType="VARCHAR"/>
+            <result property="registeredAddress" column="registered_address" jdbcType="VARCHAR"/>
+            <result property="businessScope" column="business_scope" jdbcType="VARCHAR"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,update_time,
+        create_by,update_by,name,
+        usci,registered_currency,registered_capital,
+        legal_person,establishing_time,business_nature,
+        industry_involved,registered_address,business_scope,
+        deleted
+    </sql>
+</mapper>
