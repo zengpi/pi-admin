@@ -1,8 +1,16 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/pi-admin-test?characterEncoding=UTF-8&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://pi-db:3306/pi-admin?characterEncoding=UTF-8&nullCatalogMeansCurrent=true
     username: root
     password: root
   redis:
-    host: localhost
+    host: pi-db
     password: 123456
+
+logging:
+  level:
+    root: error
+    me.pi.admin: info
+
+flowable:
+  database-schema-update: false

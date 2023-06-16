@@ -4,4 +4,4 @@
 |  __/| |  / ___ \ (_| | | | | | | | | | |
 |_|   |_| /_/   \_\__,_|_| |_| |_|_|_| |_|
  :: Spring Boot ::                (${spring-boot.version})
- :: Pi Admin    ::                (@revision@)
+ :: Pi Admin    ::                (${revision})

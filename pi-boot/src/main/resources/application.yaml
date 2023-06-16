@@ -3,14 +3,9 @@ server:
 
 spring:
   profiles:
-    active: '@profiles.active@'
+    active: @profiles.active@
   cache:
     type: redis
-
-logging:
-  level:
-    me.pi.admin: '@logging.level@'
-    org.springframework: warn
 
 # MyBatisPlus配置
 # https://baomidou.com/pages/56bac0/#typealiasespackage
@@ -43,7 +38,7 @@ auth:
     secret: Hp8Bmjl7ohJn5iSH+fcqW6/8bL4lLUM0gUvgk6oECu6SQCa7LJc4qFk8PHwrAg/enV1Xk7AILEqO8ST1cOVlHg==
 
 springdoc:
-  version: '@revision@'
+  version: @revision@
 
 management:
   endpoints:

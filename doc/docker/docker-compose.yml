@@ -43,7 +43,7 @@ services:
     network_mode: "host"
 
   pi-admin-server1:
-    image: pi/pi-admin:1.0.0-SNAPSHOT
+    image: pi/pi-admin:1.0.1-SNAPSHOT
     environment:
       SERVER_PORT: 9317
     volumes:
@@ -52,7 +52,7 @@ services:
     network_mode: "host"
 
   pi-admin-server2:
-    image: pi/pi-admin:1.0.0-SNAPSHOT
+    image: pi/pi-admin:1.0.1-SNAPSHOT
     environment:
       SERVER_PORT: 9318
     volumes:

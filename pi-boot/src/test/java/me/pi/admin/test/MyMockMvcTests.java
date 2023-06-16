@@ -36,6 +36,8 @@ public class MyMockMvcTests {
     @Test
     @WithMockUser
     void testWithMockMvc(@Autowired MockMvc mvc) throws Exception {
-        mvc.perform(get("/")).andExpect(status().isOk()).andExpect(content().string("Hello, Pi Admin!"));
+        mvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello, Pi Admin!"));
     }
 }

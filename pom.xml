@@ -20,20 +20,13 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.9</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
     <groupId>me.pi.admin</groupId>
     <artifactId>pi-admin</artifactId>
     <version>${revision}</version>
 
     <name>pi-admin</name>
     <url>https://jiabin.williamalec.top/</url>
-    <description>pi-admin 是基于 Spring Boot 2.7.9、MyBatis-Plus、Spring Security 等主流技术栈构建的后台管理系统。
+    <description>pi-admin 是基于 Spring Boot 2.7.12、MyBatis-Plus、Spring Security 等主流技术栈构建的后台管理系统。
     </description>
 
     <modules>
@@ -44,26 +37,28 @@
     </modules>
 
     <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
+        <revision>1.0.1-SNAPSHOT</revision>
         <java.version>1.8</java.version>
 
+        <spring-boot.version>2.7.12</spring-boot.version>
         <flowable.version>6.8.0</flowable.version>
 
-        <springdoc.version>1.6.15</springdoc.version>
         <jjwt.version>0.11.5</jjwt.version>
 
         <druid.version>1.2.8</druid.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <p6spy.version>3.9.1</p6spy.version>
 
+        <springdoc.version>1.6.15</springdoc.version>
+        <lombok.version>1.18.26</lombok.version>
         <hutool.version>5.8.15</hutool.version>
         <captcha.version>2.2.2</captcha.version>
         <fastjson2.version>2.0.12</fastjson2.version>
         <easyexcel.verion>3.1.1</easyexcel.verion>
-        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
 
-        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     </properties>
 
     <profiles>
@@ -71,7 +66,6 @@
             <id>dev</id>
             <properties>
                 <profiles.active>dev</profiles.active>
-                <logging.level>DEBUG</logging.level>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -81,14 +75,12 @@
             <id>test</id>
             <properties>
                 <profiles.active>test</profiles.active>
-                <logging.level>DEBUG</logging.level>
             </properties>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
-                <logging.level>WARN</logging.level>
             </properties>
         </profile>
     </profiles>
@@ -159,6 +151,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
@@ -254,89 +254,90 @@
     </dependencyManagement>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>${flatten-maven-plugin.version}</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                </configuration>
-                <executions>
-                    <!-- enable flattening -->
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <!-- ensure proper cleanup -->
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>8</source>
-                        <target>8</target>
-                        <!-- 请参阅 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
-                        <!-- 类路径元素作为注解处理器路径提供。
-                             如果指定了，编译器将只在那些类路径元素中检测注释处理器。
-                             如果省略，默认类路径将用于检测注释处理器。
-                             检测本身依赖于 annotationProcessors 的配置。根据本文档，不考虑提供的依赖处理器!
-                        -->
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>${mapstruct.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok-mapstruct-binding</artifactId>
-                                <version>${lombok-mapstruct-binding.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                    </configuration>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
 
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!-- 请参阅 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
+                    <!-- 类路径元素作为注解处理器路径提供。
+                         如果指定了，编译器将只在那些类路径元素中检测注释处理器。
+                         如果省略，默认类路径将用于检测注释处理器。
+                         检测本身依赖于 annotationProcessors 的配置。根据本文档，不考虑提供的依赖处理器!
+                    -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <!-- 关闭过滤 -->
                 <filtering>false</filtering>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <!-- 引入所有 匹配文件进行过滤 -->
                 <includes>
                     <include>application*</include>
                     <include>bootstrap*</include>
                     <include>banner*</include>
                 </includes>
-                <!-- 启用过滤 即该资源中的变量将会被过滤器中的值替换 -->
                 <filtering>true</filtering>
             </resource>
         </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

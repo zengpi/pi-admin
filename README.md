@@ -2,7 +2,7 @@
 
 ## 简介
 
-pi-admin 是基于 Spring Boot 2.7.9、MyBatis-Plus、Spring Security 等主流技术栈构建的后台管理系统。
+pi-admin 是基于 Spring Boot 2.7.12、MyBatis-Plus、Spring Security 等主流技术栈构建的后台管理系统。
 
 ### 特性
 
@@ -22,10 +22,23 @@ pi-admin 是基于 Spring Boot 2.7.9、MyBatis-Plus、Spring Security 等主流�
 
 ### 源码
 
+#### pi-admin 前后端分离框架
+
+[文档跳转](https://gitee.com/linjiabin100/pi-admin/wikis/pages)
+
 |      | Gitee                                           | GitHub                                     |
 | ---- | ----------------------------------------------- | ------------------------------------------ |
 | 后端 | https://gitee.com/linjiabin100/pi-admin.git     | https://github.com/zengpi/pi-admin.git     |
 | 前端 | https://gitee.com/linjiabin100/pi-admin-web.git | https://github.com/zengpi/pi-admin-web.git |
+
+#### pi-cloud 微服务框架
+
+[文档跳转](https://www.yuque.com/zengpi/szfuh0)
+
+| Gitee | GitHub                                          |                                                              |
+| ----- | ----------------------------------------------- | ------------------------------------------------------------ |
+| 后端  | https://gitee.com/linjiabin100/pi-cloud.git     | [https://github.com/zengpi/pi-cloud.git](https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fzengpi%2Fpi-cloud.git) |
+| 前端  | https://gitee.com/linjiabin100/pi-cloud-web.git | https://github.com/zengpi/pi-cloud-web.git                   |
 
 #### 分支说明
 

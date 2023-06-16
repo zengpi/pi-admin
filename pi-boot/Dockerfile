@@ -12,4 +12,4 @@ EXPOSE ${SERVER_PORT}
 
 ADD target/pi-boot.jar ./app.jar
 
-ENTRYPOINT ["java", "-Dserver.port=${SERVER_PORT}", "-jar", "app.jar", "--spring.profiles.active=prod"]
+ENTRYPOINT ["java", "-Dserver.port=${SERVER_PORT}", "-jar", "app.jar"]

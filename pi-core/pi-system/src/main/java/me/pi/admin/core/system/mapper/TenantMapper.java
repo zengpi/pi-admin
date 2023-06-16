@@ -16,17 +16,14 @@
 
 package me.pi.admin.core.system.mapper;
 
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import me.pi.admin.common.mybatis.BaseQuery;
-import me.pi.admin.core.system.pojo.dto.TenantRoleMenuDTO;
 import me.pi.admin.core.system.pojo.po.SysTenant;
 import me.pi.admin.core.system.pojo.vo.TenantVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 针对表【sys_tenant】的数据库操作 Mapper
@@ -44,7 +41,7 @@ public interface TenantMapper extends BaseMapper<SysTenant> {
      * @param query 查询参数
      * @return 租户
      */
-    IPage<TenantVO> selectPageTenantsByCondition(IPage<Object> page, BaseQuery query);
+    IPage<TenantVO> selectPageTenantsByCondition(@Param("page") IPage<TenantVO> page, @Param("query") BaseQuery query);
 
     /**
      * 根据租户账号获取租户信息

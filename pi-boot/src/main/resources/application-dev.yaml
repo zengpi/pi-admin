@@ -1,12 +1,16 @@
 spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://pi-db:3306/pi-admin?characterEncoding=UTF-8&nullCatalogMeansCurrent=true&useSSL=false
+    url: jdbc:p6spy:mysql://pi-db:3306/pi-admin-test?characterEncoding=UTF-8&nullCatalogMeansCurrent=true&useSSL=false
     username: root
     password: root
   redis:
     host: pi-redis
     password: 123456
+
+logging:
+  level:
+    me.pi.admin: debug
 
 flowable:
   async-executor-activate: false
