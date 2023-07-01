@@ -10,7 +10,16 @@ spring:
 
 logging:
   level:
+    root: info
     me.pi.admin: debug
 
 flowable:
   async-executor-activate: false
+
+powerjob:
+  worker:
+    app-name: pi-admin
+    server-address: pi-powerjob:7700
+    protocol: http
+    max-result-length: 4096
+    max-appended-wf-context-length: 4096

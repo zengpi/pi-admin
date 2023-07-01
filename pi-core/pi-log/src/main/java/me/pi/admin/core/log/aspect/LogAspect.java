@@ -49,11 +49,13 @@ public class LogAspect implements ApplicationEventPublisherAware {
     @Around("@annotation(log)")
     @SneakyThrows
     public Object log(ProceedingJoinPoint pjp, Log log) {
+        // 业务执行开始时间
         long start = System.currentTimeMillis();
 
         Object obj;
         LogDTO logDTO = LogUtils.getDefaultLogDTO();
         logDTO.setTitle(log.value());
+        logDTO.setTenantId(SecurityUtils.getTenantId());
 
         fillLog(pjp, logDTO);
 
@@ -64,7 +66,9 @@ public class LogAspect implements ApplicationEventPublisherAware {
             logDTO.setExceptionDesc(e.getMessage());
             throw e;
         } finally {
+            // 业务执行结束时间
             long end = System.currentTimeMillis();
+            // 业务执行耗时
             logDTO.setRequestTime(end - start);
 
             publisher.publishEvent(new LogEvent(logDTO));

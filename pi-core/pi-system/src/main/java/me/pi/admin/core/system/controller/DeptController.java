@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.core.system.service.DeptService;
 import me.pi.admin.core.system.pojo.dto.DeptDTO;
 import me.pi.admin.core.system.pojo.query.DeptTreeQuery;
@@ -63,6 +64,7 @@ public class DeptController {
     @PutMapping
     @Operation(summary = "编辑部门")
     @PreAuthorize("hasAuthority('sys_dept_update')")
+    @Log("编辑部门")
     public ResponseData<?> updateDept(@RequestBody @Valid DeptDTO dto) {
         deptService.saveOrUpdate(dto);
         return ResponseData.ok();

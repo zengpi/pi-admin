@@ -36,6 +36,10 @@
     <dependencies>
         <dependency>
             <groupId>me.pi.admin</groupId>
+            <artifactId>pi-job</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>me.pi.admin</groupId>
             <artifactId>pi-security</artifactId>
         </dependency>
         <dependency>

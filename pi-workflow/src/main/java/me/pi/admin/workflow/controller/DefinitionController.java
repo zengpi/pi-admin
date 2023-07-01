@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.pi.admin.common.pojo.vo.ResponseData;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.workflow.pojo.query.BootableDefinitionQuery;
 import me.pi.admin.workflow.pojo.query.ProcessDefQuery;
 import me.pi.admin.workflow.pojo.vo.FormVO;
@@ -75,6 +76,7 @@ public class DefinitionController {
     @PatchMapping("/state/{definitionId}/{suspended}")
     @Operation(summary = "更改流程状态")
     @PreAuthorize("hasAuthority('workflow_definition_update')")
+    @Log("更改流程状态")
     public ResponseData<?> changeState(@PathVariable String definitionId, @PathVariable Boolean suspended) {
         processDefinitionService.changeState(definitionId, suspended);
         return ResponseData.ok();

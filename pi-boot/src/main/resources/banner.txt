@@ -5,3 +5,5 @@
 |_|   |_| /_/   \_\__,_|_| |_| |_|_|_| |_|
  :: Spring Boot ::                (${spring-boot.version})
  :: Pi Admin    ::                (${revision})
+ :: doc         ::                (https://gitee.com/linjiabin100/pi-admin/wikis/pages)
+ :: source      ::                (https://gitee.com/linjiabin100/pi-admin)

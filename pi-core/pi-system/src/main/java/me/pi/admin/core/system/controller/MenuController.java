@@ -25,6 +25,7 @@ import me.pi.admin.common.exception.BizException;
 import me.pi.admin.common.pojo.vo.ResponseData;
 import me.pi.admin.common.pojo.vo.SelectTreeVO;
 import me.pi.admin.common.util.SecurityUtils;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.core.system.pojo.dto.MenuDTO;
 import me.pi.admin.core.system.pojo.query.MenuTreeQuery;
 import me.pi.admin.core.system.pojo.vo.CurrentUserMenuTreeVO;
@@ -71,6 +72,7 @@ public class MenuController {
     @PutMapping
     @Operation(summary = "编辑菜单")
     @PreAuthorize("hasAuthority('sys_menu_update')")
+    @Log("编辑菜单")
     public ResponseData<?> updateMenu(@RequestBody @Valid MenuDTO dto) {
         if(!TenantConstant.PLATFORM_MANAGER_TENANT_ID.equals(SecurityUtils.getTenantId())) {
             throw new BizException("你没有权限执行此操作");

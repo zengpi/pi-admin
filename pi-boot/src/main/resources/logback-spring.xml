@@ -18,26 +18,33 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <variable name="path" value="./logs"/>
-    <variable name="file-pattern" value="%d %-5p ${PID} --- [%t] %c%n- %m%n"/>
 
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${path}/pi-admin.log</file>
+    <appender name="POWERJOB_WORKER_CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>${file-pattern}</pattern>
-            <charset>utf-8</charset>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${CONSOLE_LOG_CHARSET}</charset>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${path}/pi-admin.%d.log</fileNamePattern>
-            <maxHistory>15</maxHistory>
+    </appender>
+
+    <appender name="POWERJOB_WORKER_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${FILE_LOG_CHARSET}</charset>
+        </encoder>
+        <file>${path}/powerjob-worker.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${path}/powerjob-worker.%d{yyyy-MM-dd}.%i.gz</FileNamePattern>
+            <cleanHistoryOnStart>${LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START:-false}</cleanHistoryOnStart>
+            <maxFileSize>${LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE:-10MB}</maxFileSize>
+            <totalSizeCap>${LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP:-0}</totalSizeCap>
+            <maxHistory>${LOGBACK_ROLLINGPOLICY_MAX_HISTORY:-7}</maxHistory>
         </rollingPolicy>
     </appender>
 
-    <appender name="file-async" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>512</queueSize>
-        <appender-ref ref="file" />
-    </appender>
+    <logger name="tech.powerjob.worker" level="INFO" additivity="false">
+        <appender-ref ref="POWERJOB_WORKER_FILE_APPENDER" />
+        <!-- 控制台输出，调试时可用 -->
+        <appender-ref ref="POWERJOB_WORKER_CONSOLE_APPENDER" />
+    </logger>
 
-    <root level="info">
-        <appender-ref ref="file-async"/>
-    </root>
 </configuration>

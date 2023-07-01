@@ -27,6 +27,7 @@ import me.pi.admin.common.mybatis.BaseQuery;
 import me.pi.admin.common.mybatis.validate.SaveGroup;
 import me.pi.admin.common.mybatis.validate.UpdateGroup;
 import me.pi.admin.common.pojo.vo.ResponseData;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.workflow.converter.ProcessFormConverter;
 import me.pi.admin.workflow.enums.BuiltInFormEnum;
 import me.pi.admin.workflow.pojo.dto.FormDTO;
@@ -76,6 +77,7 @@ public class FormController {
     @PutMapping
     @Operation(summary = "编辑表单")
     @PreAuthorize("hasAuthority('workflow_form_update')")
+    @Log("编辑表单")
     public ResponseData<?> updateForm(@RequestBody @Validated(UpdateGroup.class) FormDTO formDto) {
         saveOrUpdate(formDto);
         return ResponseData.ok();

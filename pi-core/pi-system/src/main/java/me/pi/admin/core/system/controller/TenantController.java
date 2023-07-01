@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.pi.admin.common.mybatis.BaseQuery;
 import me.pi.admin.common.pojo.vo.ResponseData;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.core.system.converter.TenantConverter;
 import me.pi.admin.core.system.pojo.dto.TenantSaveDTO;
 import me.pi.admin.core.system.pojo.dto.TenantUpdateDTO;
@@ -68,6 +69,7 @@ public class TenantController {
     @PutMapping
     @Operation(summary = "更新租户")
     @PreAuthorize("hasAuthority('sys_tenant_update')")
+    @Log("更新租户")
     public ResponseData<?> updateTenant(@RequestBody @Valid TenantUpdateDTO dto) {
         tenantService.updateTenant(dto);
         return ResponseData.ok();

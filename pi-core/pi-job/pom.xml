@@ -18,21 +18,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>pi-admin</artifactId>
+        <artifactId>pi-core</artifactId>
         <groupId>me.pi.admin</groupId>
         <version>${revision}</version>
     </parent>
-    <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pi-core</artifactId>
+    <artifactId>pi-job</artifactId>
 
-    <modules>
-        <module>pi-job</module>
-        <module>pi-log</module>
-        <module>pi-security</module>
-        <module>pi-system</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>tech.powerjob</groupId>
+            <artifactId>powerjob-worker-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -25,6 +25,7 @@ import me.pi.admin.common.mybatis.BaseQuery;
 import me.pi.admin.common.mybatis.validate.SaveGroup;
 import me.pi.admin.common.mybatis.validate.UpdateGroup;
 import me.pi.admin.common.pojo.vo.ResponseData;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.core.system.pojo.dto.EnterpriseDTO;
 import me.pi.admin.core.system.pojo.vo.EnterpriseVO;
 import me.pi.admin.core.system.service.EnterpriseService;
@@ -65,6 +66,7 @@ public class EnterpriseController {
     @PutMapping
     @Operation(summary = "编辑企业")
     @PreAuthorize("hasAuthority('sys_enterprise_update')")
+    @Log("编辑企业")
     public ResponseData<?> updateEnterprise(@RequestBody @Validated(UpdateGroup.class) EnterpriseDTO dto) {
         enterpriseService.saveOrUpdate(dto);
         return ResponseData.ok();

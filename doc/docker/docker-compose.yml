@@ -1,27 +1,37 @@
 version: '3.1'
 
 services:
-  mysql:
-    image: mysql
-    container_name: mysql
+  pi-admin-server1:
+    image: pi/pi-admin:1.0.2
+    container_name: pi-admin-server1
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: pi-admin
+      SERVER_PORT: 9317
+      POWERJOB_WORKER_PORT: 27777
     volumes:
-      # 数据挂载
-      - /docker/mysql/data/:/var/lib/mysql/
-      # 配置挂载
-      - /docker/mysql/conf/:/etc/mysql/conf.d/
-    command:
-      --default-authentication-plugin=mysql_native_password
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_general_ci
-    privileged: true
+      - /docker/server1/logs/:/pi/server/logs
+    depends_on:
+      - pi-redis
+      - pi-powerjob-server
+    restart: always
     network_mode: "host"
 
-  nginx:
+  pi-admin-server2:
+    image: pi/pi-admin:1.0.2
+    container_name: pi-admin-server2
+    environment:
+      SERVER_PORT: 9318
+      POWERJOB_WORKER_PORT: 27778
+    volumes:
+      - /docker/server2/logs/:/pi/server/logs
+    depends_on:
+      - pi-redis
+      - pi-powerjob-server
+    restart: always
+    network_mode: "host"
+
+  pi-nginx:
     image: nginx
-    container_name: nginx
+    container_name: pi-nginx
     volumes:
       # 配置文件
       - /docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
@@ -29,33 +39,45 @@ services:
       - /docker/nginx/html:/usr/share/nginx/html
       # 日志
       - /docker/nginx/log:/var/log/nginx
-    privileged: true
+    restart: always
     network_mode: "host"
 
-  redis:
+  pi-redis:
     image: redis
-    container_name: redis
+    container_name: pi-redis
     volumes:
       - /docker/redis/conf:/redis/config:rw
       - /docker/redis/data/:/redis/data/:rw
     command: "redis-server /redis/config/redis.conf"
-    privileged: true
+    restart: always
     network_mode: "host"
 
-  pi-admin-server1:
-    image: pi/pi-admin:1.0.1-SNAPSHOT
+  pi-powerjob-server:
+    image: tjqq/powerjob-server:latest
+    container_name: pi-powerjob-server
     environment:
-      SERVER_PORT: 9317
+      TZ: "Asia/Shanghai"
+      PARAMS: "--spring.profiles.active=product --spring.datasource.core.jdbc-url=jdbc:mysql://localhost:3306/powerjob-product?useUnicode=true&characterEncoding=UTF-8 --spring.datasource.core.username=root --spring.datasource.core.password=root"
     volumes:
-      - /docker/server1/logs/:/pi/server/logs
-    privileged: true
+      - /docker/powerjob-server:/root/powerjob/server
+      - ~/.m2:/root/.m2
+    restart: always
     network_mode: "host"
 
-  pi-admin-server2:
-    image: pi/pi-admin:1.0.1-SNAPSHOT
+  # 不建议在生产环境中使用
+  pi-mysql:
+    image: mysql
+    container_name: pi-mysql
     environment:
-      SERVER_PORT: 9318
+      MYSQL_ROOT_PASSWORD: root
     volumes:
-      - /docker/server2/logs/:/pi/server/logs
-    privileged: true
+      # 数据挂载
+      - /docker/mysql/data/:/var/lib/mysql/
+      # 配置挂载
+      - /docker/mysql/conf/:/etc/mysql/conf.d/
+      - /docker/mysql/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
     network_mode: "host"

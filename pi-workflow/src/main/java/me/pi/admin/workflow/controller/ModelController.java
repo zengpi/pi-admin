@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import me.pi.admin.common.pojo.vo.ResponseData;
 import me.pi.admin.common.mybatis.validate.SaveGroup;
 import me.pi.admin.common.mybatis.validate.UpdateGroup;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.workflow.pojo.dto.SaveModelDesignDTO;
 import me.pi.admin.workflow.converter.ProcessModelConverter;
 import me.pi.admin.workflow.pojo.dto.ProcessModelDTO;
@@ -67,6 +68,7 @@ public class ModelController {
     @PostMapping
     @Operation(summary = "新增流程模型")
     @PreAuthorize("hasAuthority('workflow_model_save')")
+    @Log("新增流程模型")
     public ResponseData<?> saveModel(@Validated(SaveGroup.class) @RequestBody ProcessModelDTO processModelDto) {
         processModelService.saveModel(processModelDto);
         return ResponseData.ok();
@@ -75,6 +77,7 @@ public class ModelController {
     @PutMapping
     @Operation(summary = "更新流程模型")
     @PreAuthorize("hasAuthority('workflow_model_update')")
+    @Log("更新流程模型")
     public ResponseData<?> updateModel(@Validated(UpdateGroup.class) @RequestBody ProcessModelDTO processModelDto) {
         processModelService.updateModel(processModelDto);
         return ResponseData.ok();
@@ -83,6 +86,7 @@ public class ModelController {
     @DeleteMapping("/{modelIds}")
     @Operation(summary = "删除流程模型")
     @PreAuthorize("hasAuthority('workflow_model_delete')")
+    @Log("删除流程模型")
     public ResponseData<?> deleteModels(@NotEmpty(message = "主键不能为空") @PathVariable Set<String> modelIds) {
         processModelService.deleteModels(modelIds);
         return ResponseData.ok();
@@ -97,6 +101,7 @@ public class ModelController {
     @PostMapping("/modelDesign")
     @Operation(summary = "保存流程模型设计")
     @PreAuthorize("hasAuthority('workflow_model_save_design')")
+    @Log("保存流程模型设计")
     public ResponseData<?> saveModelDesign(@Valid @RequestBody SaveModelDesignDTO saveModelDesignDto) {
         processModelService.saveModelDesign(saveModelDesignDto);
         return ResponseData.ok();
@@ -105,6 +110,7 @@ public class ModelController {
     @PostMapping("/deploy/{modelId}")
     @Operation(summary = "部署流程模型")
     @PreAuthorize("hasAuthority('workflow_model_deploy')")
+    @Log("部署流程模型")
     public ResponseData<?> deployModel(@PathVariable String modelId) {
         processModelService.deployModel(modelId);
         return ResponseData.ok();

@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.pi.admin.common.mybatis.validate.SaveGroup;
 import me.pi.admin.common.mybatis.validate.UpdateGroup;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.core.system.service.*;
 import me.pi.admin.common.mybatis.PiPage;
 import me.pi.admin.common.mybatis.BaseQuery;
@@ -75,6 +76,7 @@ public class RoleController {
     @PutMapping
     @Operation(summary = "编辑角色")
     @PreAuthorize("hasAuthority('sys_role_edit')")
+    @Log("编辑角色")
     public ResponseData<?> updateRole(@RequestBody @Validated(UpdateGroup.class) RoleDTO dto) {
         roleService.saveOrUpdate(dto);
         return ResponseData.ok();
@@ -103,6 +105,7 @@ public class RoleController {
     @PostMapping("/roleUserAllocation")
     @Operation(summary = "角色用户分配")
     @PreAuthorize("hasAuthority('sys_role_user_allocation')")
+    @Log("角色用户分配")
     public ResponseData<?> allocateRoleUser(@RequestBody RoleUserAllocationDTO dto) {
         userRoleService.allocationRoleUser(dto);
         return ResponseData.ok();
@@ -111,6 +114,7 @@ public class RoleController {
     @PostMapping("/roleMenuAllocation/{roleId}")
     @Operation(summary = "角色菜单分配")
     @PreAuthorize("hasAuthority('sys_role_menu_allocation')")
+    @Log("角色菜单分配")
     public ResponseData<?> allocateRoleMenu(@PathVariable Long roleId, @RequestBody Set<Long> menuIds) {
         roleMenuService.roleMenuAllocation(roleId, menuIds);
         return ResponseData.ok();

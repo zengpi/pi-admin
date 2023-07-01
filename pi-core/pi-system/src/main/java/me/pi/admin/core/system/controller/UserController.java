@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.core.system.pojo.query.OptionalUserQuery;
 import me.pi.admin.core.system.service.UserService;
 import me.pi.admin.core.system.pojo.dto.ProfileDTO;
@@ -70,6 +71,7 @@ public class UserController {
     @PutMapping
     @Operation(summary = "编辑用户")
     @PreAuthorize("hasAuthority('sys_user_edit')")
+    @Log("编辑用户")
     public ResponseData<?> updateUser(@RequestBody @Valid UserDTO dto) {
         userService.updateUser(dto);
         return ResponseData.ok();
@@ -121,6 +123,7 @@ public class UserController {
     @PutMapping("/passReset/{id}")
     @Operation(summary = "密码重置")
     @PreAuthorize("hasAuthority('sys_user_pass_reset')")
+    @Log("重置密码")
     public ResponseData<?> resetPass(@PathVariable Long id) {
         userService.resetPass(id);
         return ResponseData.ok();
@@ -135,6 +138,7 @@ public class UserController {
     @PostMapping("/avatarUpload")
     @Operation(summary = "头像上传")
     @SneakyThrows
+    @Log("头像上传")
     public ResponseData<?> uploadAvatar(MultipartFile file, String username, String avatar) {
         userService.uploadAvatar(file, username, avatar);
 

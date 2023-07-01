@@ -25,6 +25,7 @@ import me.pi.admin.common.mybatis.BaseQuery;
 import me.pi.admin.common.mybatis.validate.SaveGroup;
 import me.pi.admin.common.mybatis.validate.UpdateGroup;
 import me.pi.admin.common.pojo.vo.ResponseData;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.workflow.pojo.dto.ProcessCategoryDTO;
 import me.pi.admin.workflow.pojo.vo.ProcessCategoryVO;
 import me.pi.admin.workflow.service.ProcessCategoryService;
@@ -66,6 +67,7 @@ public class CategoryController {
     @PutMapping
     @Operation(summary = "修改分类")
     @PreAuthorize("hasAuthority('workflow_category_update')")
+    @Log("修改分类")
     public ResponseData<?> updateCategory(
             @RequestBody @Validated(UpdateGroup.class) ProcessCategoryDTO processCategoryDto) {
         processCategoryService.saveOrUpdate(processCategoryDto);

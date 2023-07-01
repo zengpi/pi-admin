@@ -9,10 +9,11 @@ pi-admin 是基于 Spring Boot 2.7.12、MyBatis-Plus、Spring Security 等主流
 - 基于 Spring Security、JWT 的统一认证鉴权。
 - 使用 MyBatis-Plus 简化 DAO 操作，它提供了众多插件，如自动分页、逻辑删除、自动填充、多租户等。
 - 整合 Flowable 工作流，方便管理、执行和监控复杂的工作流和业务流程。
-- 内置多租户，方便隔离不同企业、分公司、组织的数据。
+- 内置多租户，方便隔离不同企业、分公司或组织的数据。
 - 数据权限。自定义 MyBatis-Plus  的拦截器拦截待执行的 SQL，动态添加查询条件，实现数据过滤。
 - 数据脱敏。采用自定义 Jackson 序列化器在序列化时脱敏。只需一个注解，指定脱敏策略即可实现数据脱敏。
-- 支持 Docker 编排，一键部署环境。
+- 整合 powerjob，全新一代的分布式任务调度与计算框架。
+- 支持 Docker 编排，一键搭建环境。
 - 代码风格遵循 Alibaba Java 开发规范。
 - 只保留系统核心功能，无过度自定义封装，易于学习和功能扩展。
 
@@ -44,7 +45,7 @@ pi-admin 是基于 Spring Boot 2.7.12、MyBatis-Plus、Spring Security 等主流
 
 **master**：主分支。最新代码的稳定分支。
 
-**1.0.x**：1.0 版本稳定分支。
+**1.x**：1.0 版本稳定分支。
 
 **dev**：开发分支。此分支代码随时修改，不稳定。
 
@@ -74,10 +75,11 @@ pi-admin 的版本号命名方式为 主版本号.次版本号.修订号：
 - pi-admin
    - pi-boot                      项目启动入口
    - pi-common                    公共模块
-      - pi-common-core            公共核心模块
+      - pi-common-core            核心
       - pi-common-mybatis         mybatis 配置
       - pi-common-serialization   序列化配置
    - pi-core                      系统核心模块
+      - pi-job					  任务调度中心
       - pi-log                    日志模块
       - pi-security               安全模块
       - pi-system                 系统模块
@@ -135,7 +137,7 @@ pi-admin 需要 Java 8+，同时支持 Maven 3.5 及以上版本。实际上，p
 
 **注意：项目中 MySQL 默认用户名密码均为 `root`，Redis 的密码为 `123456`。**
 
-#### Docker 部署开发环境
+### Docker 部署开发环境
 
 这种方式要求在你的计算机中已经安装了 Docker，如果没有，请按照系统要求中提供的方式进行安装。
 
@@ -150,12 +152,18 @@ pi-admin 需要 Java 8+，同时支持 Maven 3.5 及以上版本。实际上，p
 3. 使用远程连接工具连接服务器并进入 /docker 目录，执行以下命令：
 
    ```shell
-   $ sudo docker compose up -d mysql redis nginx
+   $ sudo docker compose up -d pi-mysql pi-redis pi-nginx pi-powerjob-server
    ```
 
-**注意：对于以上方式启动的 mysql，只适合在开发环境使用，生产环境请自行搭建。**
+   **注意：对于以上方式启动的 mysql，只适合在开发环境使用，生产环境请自行搭建。**
 
-### 项目下载
+4. 如果想关闭整个环境，请执行以下命令：
+
+   ```shell
+   $ sudo docker compose down
+   ```
+
+## 项目下载
 
 ```
 $ git clone https://gitee.com/linjiabin100/pi-admin.git
@@ -183,6 +191,7 @@ spring:
 10.30.1.19 pi-redis
 10.30.1.19 pi-db
 10.30.1.19 pi-server
+10.30.1.19 pi-powerjob
 ```
 
 其中，`10.30.1.19` 为我的内网的 IP，您需要将它修改成你自己的。
@@ -220,4 +229,5 @@ Hello, Pi Admin!
 | ![](https://cdn.jsdelivr.net/gh/zengpi/image-hosting-service/pi-admin/20230610201249.png) | ![](https://cdn.jsdelivr.net/gh/zengpi/image-hosting-service/pi-admin/20230610201307.png) |
 | ![](https://cdn.jsdelivr.net/gh/zengpi/image-hosting-service/pi-admin/20230610201326.png) | ![](https://cdn.jsdelivr.net/gh/zengpi/image-hosting-service/pi-admin/20230610201339.png) |
 | ![](https://cdn.jsdelivr.net/gh/zengpi/image-hosting-service/pi-admin/20230610201351.png) | ![](https://cdn.jsdelivr.net/gh/zengpi/image-hosting-service/pi-admin/20230610201405.png) |
+| ![](https://cdn.jsdelivr.net/gh/zengpi/image-hosting-service/2023-06-26/20230628095614.png) |                                                              |
 

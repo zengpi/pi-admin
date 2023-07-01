@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.pi.admin.common.mybatis.validate.SaveGroup;
 import me.pi.admin.common.pojo.vo.ResponseData;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.core.system.pojo.dto.PackageDTO;
 import me.pi.admin.core.system.pojo.query.PackageQuery;
 import me.pi.admin.core.system.pojo.vo.PackageVO;
@@ -67,6 +68,7 @@ public class PackageController {
     @PutMapping
     @Operation(summary = "编辑套餐")
     @PreAuthorize("hasAuthority('sys_package_update')")
+    @Log("编辑套餐")
     public ResponseData<?> updatePackage(@RequestBody @Validated(SaveGroup.class) PackageDTO dto) {
         packageService.saveOrUpdate(dto);
         return ResponseData.ok();
@@ -90,6 +92,7 @@ public class PackageController {
     @PostMapping("/packageMenusAllocate/{packageId}")
     @Operation(summary = "为套餐分配菜单")
     @PreAuthorize("hasAuthority('sys_package_menus_allocate')")
+    @Log("套餐菜单分配")
     public ResponseData<?> allocatePackageMenu(@PathVariable Long packageId, @RequestBody Set<Long> menuIds) {
         packageMenuService.allocatePackageMenu(packageId, menuIds);
         return ResponseData.ok();

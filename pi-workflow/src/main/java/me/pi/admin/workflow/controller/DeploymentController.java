@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.pi.admin.common.mybatis.BaseQuery;
 import me.pi.admin.common.pojo.vo.ResponseData;
+import me.pi.admin.core.log.annotation.Log;
 import me.pi.admin.workflow.pojo.vo.ProcessDeploymentVO;
 import me.pi.admin.workflow.service.ProcessDeploymentService;
 import org.springframework.http.HttpHeaders;
@@ -56,6 +57,7 @@ public class DeploymentController {
     @DeleteMapping("/{ids}")
     @Operation(summary = "删除流程部署")
     @PreAuthorize("hasAuthority('workflow_deployment_delete')")
+    @Log("删除流程部署")
     public ResponseData<?> deleteDeployments(@PathVariable Set<String> ids) {
         processDeploymentService.deleteDeployments(ids);
         return ResponseData.ok();
