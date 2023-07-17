@@ -8,12 +8,12 @@ pi-admin 是基于 Spring Boot 2.7.12、MyBatis-Plus、Spring Security 等主流
 
 - 基于 Spring Security、JWT 的统一认证鉴权。
 - 使用 MyBatis-Plus 简化 DAO 操作，它提供了众多插件，如自动分页、逻辑删除、自动填充、多租户等。
-- 整合 Flowable 工作流，方便管理、执行和监控复杂的工作流和业务流程。
+- 整合 Flowable 工作流，方便管理、执行和监控复杂的工作流和业务流程。同时实现了基于 bpmn.js 的可视化建模工具，简化流程设计步骤。
 - 内置多租户，方便隔离不同企业、分公司或组织的数据。
 - 数据权限。自定义 MyBatis-Plus  的拦截器拦截待执行的 SQL，动态添加查询条件，实现数据过滤。
 - 数据脱敏。采用自定义 Jackson 序列化器在序列化时脱敏。只需一个注解，指定脱敏策略即可实现数据脱敏。
 - 整合 powerjob，全新一代的分布式任务调度与计算框架。
-- 支持 Docker 编排，一键搭建环境。
+- 支持 Docker 编排，一键搭建环境，包括数据库的创建及数据的导入。
 - 代码风格遵循 Alibaba Java 开发规范。
 - 只保留系统核心功能，无过度自定义封装，易于学习和功能扩展。
 
@@ -139,23 +139,25 @@ pi-admin 需要 Java 8+，同时支持 Maven 3.5 及以上版本。实际上，p
 
 ### Docker 部署开发环境
 
-这种方式要求在你的计算机中已经安装了 Docker，如果没有，请按照系统要求中提供的方式进行安装。
+使用 Docker 部署开发环境要求在你的计算机中已经安装了 Docker 和 Docker Compse，如果还没有，请按照系统要求中[提供的方式](https://www.cnblogs.com/zn-pi/p/16861292.html)进行安装。
 
-1. 将项目目录 doc 中的 docker 目录上传到 Docker 服务器的根目录中，上传工具请自行选择。
+1. 将项目目录 doc 中的 docker 目录上传到 Docker 所在服务器，上传工具请自行选择。
 
-2. 给 docker 目录分配权限：
-
-   ```shell
-   $ sudo chmod -R 777 /docker
-   ```
-
-3. 使用远程连接工具连接服务器并进入 /docker 目录，执行以下命令：
+2. 进入 docker 所在目录，给 docker 目录分配权限：
 
    ```shell
-   $ sudo docker compose up -d pi-mysql pi-redis pi-nginx pi-powerjob-server
+   $ sudo chmod -R 777 docker
    ```
 
-   **注意：对于以上方式启动的 mysql，只适合在开发环境使用，生产环境请自行搭建。**
+3. 使用远程连接工具连接到服务器并进入到 docker 目录，执行以下命令：
+
+   ```shell
+   $ sudo docker compose up -d mysql redis nginx powerjob-server
+   ```
+
+   至此，开发环境就搭建完成了，包括数据库的创建以及数据的导入都已自动完成，现在你可以运行你的项目。
+
+   **第一次启动时 mysql 需要创建数据库及导入数据，需要花费较长时间，请耐心等候。如果 mysql 容器启动时间过长导致依赖 MySQL 的组件启动失败，请单独重启该组件。如果 redis 报 Permission denied，请确保执行了第二步。**
 
 4. 如果想关闭整个环境，请执行以下命令：
 

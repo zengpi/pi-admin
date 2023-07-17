@@ -1,83 +1,103 @@
-version: '3.1'
+version: '3.8'
 
 services:
   pi-admin-server1:
-    image: pi/pi-admin:1.0.2
+    image: pi/pi-admin:${PI_ADMIN_VERSION}
     container_name: pi-admin-server1
     environment:
+      TZ: "Asia/Shanghai"
       SERVER_PORT: 9317
       POWERJOB_WORKER_PORT: 27777
     volumes:
-      - /docker/server1/logs/:/pi/server/logs
-    depends_on:
-      - pi-redis
-      - pi-powerjob-server
+      - ./server1/logs/:/pi/server/logs
     restart: always
     network_mode: "host"
 
   pi-admin-server2:
-    image: pi/pi-admin:1.0.2
+    image: pi/pi-admin:${PI_ADMIN_VERSION}
     container_name: pi-admin-server2
     environment:
+      TZ: "Asia/Shanghai"
       SERVER_PORT: 9318
       POWERJOB_WORKER_PORT: 27778
     volumes:
-      - /docker/server2/logs/:/pi/server/logs
-    depends_on:
-      - pi-redis
-      - pi-powerjob-server
+      - ./server2/logs/:/pi/server/logs
     restart: always
     network_mode: "host"
 
-  pi-nginx:
-    image: nginx
-    container_name: pi-nginx
+  mysql:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: ./mysql/Dockerfile
+    image: pi-admin/mysql:${PI_ADMIN_VERSION}
+    env_file:
+      - ./env/mysql.env
     volumes:
-      # 配置文件
-      - /docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-      # 前端代码
-      - /docker/nginx/html:/usr/share/nginx/html
-      # 日志
-      - /docker/nginx/log:/var/log/nginx
+      - ./mysql/data/:/var/lib/mysql/
+      - ./mysql/conf/:/etc/mysql/conf.d/
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 50
     restart: always
     network_mode: "host"
 
-  pi-redis:
+  redis:
     image: redis
-    container_name: pi-redis
+    container_name: redis
+    environment:
+      TZ: "Asia/Shanghai"
     volumes:
-      - /docker/redis/conf:/redis/config:rw
-      - /docker/redis/data/:/redis/data/:rw
+      - ./redis/conf:/redis/config:rw
+      - ./redis/data/:/redis/data/:rw
     command: "redis-server /redis/config/redis.conf"
     restart: always
     network_mode: "host"
 
-  pi-powerjob-server:
-    image: tjqq/powerjob-server:latest
-    container_name: pi-powerjob-server
+  nginx:
+    image: nginx
+    container_name: pi-nginx
     environment:
       TZ: "Asia/Shanghai"
-      PARAMS: "--spring.profiles.active=product --spring.datasource.core.jdbc-url=jdbc:mysql://localhost:3306/powerjob-product?useUnicode=true&characterEncoding=UTF-8 --spring.datasource.core.username=root --spring.datasource.core.password=root"
     volumes:
-      - /docker/powerjob-server:/root/powerjob/server
-      - ~/.m2:/root/.m2
+      - ./nginx/cert:/etc/nginx/cert
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/log:/var/log/nginx
     restart: always
     network_mode: "host"
 
-  # 不建议在生产环境中使用
-  pi-mysql:
-    image: mysql
-    container_name: pi-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
+  powerjob-server:
+    container_name: powerjob-server
+    build:
+      context: .
+      dockerfile: powerjob/Dockerfile
+    image: pi-admin/powerjob-server
     volumes:
-      # 数据挂载
-      - /docker/mysql/data/:/var/lib/mysql/
-      # 配置挂载
-      - /docker/mysql/conf/:/etc/mysql/conf.d/
-      - /docker/mysql/init/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command:
-      --default-authentication-plugin=mysql_native_password
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_general_ci
+      - ./powerjob/server:/root/powerjob/server
+      - ~/.m2:/root/.m2
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+    network_mode: "host"
+
+  flowable-ui:
+    image: flowable/flowable-ui:${FLOWABLE_UI_VERSION}
+    container_name: flowable-ui
+    environment:
+      TZ: "Asia/Shanghai"
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/pi-admin?useUnicode=true&characterEncoding=UTF-8&nullCatalogMeansCurrent=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    volumes:
+      - ./flowable/lib/mysql-connector-j-8.0.33.jar:/app/WEB-INF/lib/mysql-connector-j-8.0.33.jar
+      - ./flowable/lib/flowable-ui-modeler-frontend-${FLOWABLE_UI_VERSION}.jar:/app/WEB-INF/lib/flowable-ui-modeler-frontend-${FLOWABLE_UI_VERSION}.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
     network_mode: "host"

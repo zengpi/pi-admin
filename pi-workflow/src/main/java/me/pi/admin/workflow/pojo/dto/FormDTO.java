@@ -44,6 +44,12 @@ public class FormDTO {
     @NotBlank(message = "表单名称不能为空", groups = {SaveGroup.class, UpdateGroup.class})
     private String name;
     /**
+     * 表单key
+     */
+    @Schema(description = "表单key")
+    @NotBlank(message = "表单key不能为空", groups = {SaveGroup.class, UpdateGroup.class})
+    private String formKey;
+    /**
      * 是否内置
      */
     @Schema(description = "是否内置")

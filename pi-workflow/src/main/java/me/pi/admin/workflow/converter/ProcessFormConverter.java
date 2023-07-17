@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import me.pi.admin.common.mybatis.PiPage;
 import me.pi.admin.workflow.pojo.dto.FormDTO;
 import me.pi.admin.workflow.pojo.po.ActReForm;
-import me.pi.admin.workflow.pojo.vo.FormVO;
+import me.pi.admin.workflow.pojo.vo.ProcessDefinitionStartFormVO;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -36,21 +36,21 @@ public interface ProcessFormConverter {
      * @param form ActReForm
      * @return ProcessFormVO
      */
-    FormVO poToVo(ActReForm form);
+    ProcessDefinitionStartFormVO poToVo(ActReForm form);
 
     /**
      * IPage<ActReForm> -> IPage<FormVO>
      * @param actReFormPage IPage<FormVO>
      * @return IPage<FormVO>
      */
-    PiPage<FormVO> poPageToVoPage(IPage<ActReForm> actReFormPage);
+    PiPage<ProcessDefinitionStartFormVO> poPageToVoPage(IPage<ActReForm> actReFormPage);
 
     /**
      * List<ActReForm> -> List<ProcessFormVO>
      * @param forms List<ActReForm>
      * @return List<ProcessFormVO>
      */
-    List<FormVO> posToVos(List<ActReForm> forms);
+    List<ProcessDefinitionStartFormVO> posToVos(List<ActReForm> forms);
 
     /**
      * FormDTO -> ActReForm

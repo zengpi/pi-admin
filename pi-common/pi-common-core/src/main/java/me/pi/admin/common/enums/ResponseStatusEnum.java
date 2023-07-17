@@ -112,9 +112,10 @@ public enum ResponseStatusEnum {
     ILLEGAL_ARGUMENT_EXCEPTION("B0300", "非法参数异常"),
 
     ACCESS_TOKEN_GEN_FAIL("B0400", "访问令牌生成失败"),
-    REFRESH_TOKEN_GEN_FAIL("B0400", "访问令牌生成失败"),
 
     BIZ_EXCEPTION("B0500", "业务异常"),
+    RESOURCE_NOT_FOUND("B0600", "资源未找到"),
+    STATE_EXCEPTION("B0700", "状态异常"),
 
     /*
     错误来源于第三方服务

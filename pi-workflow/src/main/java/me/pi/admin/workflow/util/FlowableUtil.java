@@ -34,6 +34,22 @@ public final class FlowableUtil {
     private static final BpmnXMLConverter BPMN_XML_CONVERTER = new BpmnXMLConverter();
 
     /**
+     * 解析 BpmnModel，获取 StartEvent
+     *
+     * @param bpmnModel            BpmnModel
+     * @param processDefinitionKey 流程定义 key
+     * @return Optional<StartEvent>
+     */
+    public static Optional<StartEvent> getStartEvent(BpmnModel bpmnModel, String processDefinitionKey) {
+        Process process = bpmnModel.getProcessById(processDefinitionKey);
+        FlowElement startElement = process.getInitialFlowElement();
+        if (startElement instanceof StartEvent) {
+            return Optional.of((StartEvent) startElement);
+        }
+        return Optional.empty();
+    }
+
+    /**
      * 根据 BpmnXML 获取 BpmnModel
      *
      * @param bpmnXml BpmnXML
@@ -45,32 +61,45 @@ public final class FlowableUtil {
     }
 
     /**
+     * 获取元素表单 key
+     *
+     * @param bpmnModel Bpmn模型
+     * @param flowElementId 元素 id
+     * @return 表单
+     */
+    public static String getFormKey(BpmnModel bpmnModel, String flowElementId) {
+        FlowElement flowElement = getFlowElementById(bpmnModel, flowElementId);
+        return getFormKey(flowElement);
+    }
+
+    /**
+     * 获取元素表单 key
+     *
+     * @param flowElement 元素
+     * @return 表单
+     */
+    public static String getFormKey(FlowElement flowElement) {
+        if (Objects.isNull(flowElement)) {
+            return null;
+        }
+        if (flowElement instanceof StartEvent) {
+            return ((StartEvent) flowElement).getFormKey();
+        } else if (flowElement instanceof UserTask) {
+            return ((UserTask) flowElement).getFormKey();
+        }
+        return null;
+    }
+
+    /**
      * 获取流程元素信息
      *
-     * @param bpmnModel     BpmnModel
+     * @param bpmnModel     Bpmn模型
      * @param flowElementId 元素 ID
      * @return 元素信息
      */
     public static FlowElement getFlowElementById(BpmnModel bpmnModel, String flowElementId) {
         Process process = bpmnModel.getMainProcess();
         return process.getFlowElement(flowElementId);
-    }
-
-    /**
-     * 获取元素表单
-     *
-     * @param flowElement 元素
-     * @return 表单
-     */
-    public static String getFormKey(FlowElement flowElement) {
-        if (flowElement != null) {
-            if (flowElement instanceof StartEvent) {
-                return ((StartEvent) flowElement).getFormKey();
-            } else if (flowElement instanceof UserTask) {
-                return ((UserTask) flowElement).getFormKey();
-            }
-        }
-        return null;
     }
 
     /**

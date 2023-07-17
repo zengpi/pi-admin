@@ -71,7 +71,7 @@ public interface UserMapper extends BaseMapper<SysUser> {
      * @param query 查询条件
      * @return 可选用户列表
      */
-    PiPage<OptionalUserVO> listOptionalUsers(PiPage<OptionalUserVO> page, BaseQuery query);
+    PiPage<OptionalUserVO> listOptionalUsers(@Param("page") PiPage<OptionalUserVO> page, @Param("query") BaseQuery query);
 
     /**
      * 获取角色成员

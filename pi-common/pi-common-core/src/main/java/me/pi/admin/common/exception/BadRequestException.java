@@ -24,22 +24,26 @@ import me.pi.admin.common.enums.ResponseStatusEnum;
  * @since 2022-08-16
  */
 @Getter
-public class BadRequestException extends RuntimeException{
+public class BadRequestException extends BaseException {
     private static final long serialVersionUID = -1528006679211572586L;
 
-    private String code = ResponseStatusEnum.REQUEST_PARAM_ERROR.getCode();
+    public BadRequestException() {
+        this(ResponseStatusEnum.REQUEST_PARAM_ERROR);
+    }
 
-    public BadRequestException(String msg){
-        super(msg);
+    public BadRequestException(String message){
+        super(ResponseStatusEnum.REQUEST_PARAM_ERROR.getCode(), message);
+    }
+
+    public BadRequestException(String code, String message) {
+        super(code, message);
     }
 
     public BadRequestException(ResponseStatusEnum responseStatusEnum){
-        super(responseStatusEnum.getMsg());
-        this.code = responseStatusEnum.getCode();
+        super(responseStatusEnum);
     }
 
-    public BadRequestException(ResponseStatusEnum responseStatusEnum, String msg){
-        super(msg);
-        this.code = responseStatusEnum.getCode();
+    public BadRequestException(ResponseStatusEnum responseStatusEnum, String message){
+        super(responseStatusEnum.getCode(), message);
     }
 }

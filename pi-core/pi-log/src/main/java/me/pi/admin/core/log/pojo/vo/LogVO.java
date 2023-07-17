@@ -36,7 +36,7 @@ public class LogVO implements Serializable {
     private Integer id;
 
     @Schema(description = "创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     @Schema(description = "操作人")

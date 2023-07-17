@@ -24,22 +24,26 @@ import me.pi.admin.common.enums.ResponseStatusEnum;
  * @date 2022-12-02 22:01
  */
 @Getter
-public class BizException extends RuntimeException {
+public class BizException extends BaseException {
     private static final long serialVersionUID = 1906310822616623742L;
 
-    private String code = ResponseStatusEnum.BIZ_EXCEPTION.getCode();
+    public BizException() {
+        this(ResponseStatusEnum.BIZ_EXCEPTION);
+    }
 
-    public BizException(String msg){
-        super(msg);
+    public BizException(String message){
+        super(ResponseStatusEnum.BIZ_EXCEPTION.getCode(), message);
+    }
+
+    public BizException(String code, String message) {
+        super(code, message);
     }
 
     public BizException(ResponseStatusEnum responseStatus){
-        super(responseStatus.getMsg());
-        this.code = responseStatus.getCode();
+        super(responseStatus);
     }
 
-    public BizException(ResponseStatusEnum responseStatus, String msg){
-        super(msg);
-        this.code = responseStatus.getCode();
+    public BizException(ResponseStatusEnum responseStatus, String message){
+        super(responseStatus.getCode(), message);
     }
 }

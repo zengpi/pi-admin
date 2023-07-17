@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/pi-admin?characterEncoding=UTF-8&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://localhost:3306/pi-admin?characterEncoding=UTF-8&nullCatalogMeansCurrent=true&serverTimezone=Asia/Shanghai
     username: root
     password: root
   redis:

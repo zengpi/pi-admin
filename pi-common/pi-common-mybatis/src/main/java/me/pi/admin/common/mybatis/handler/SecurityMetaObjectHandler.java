@@ -17,6 +17,7 @@
 package me.pi.admin.common.mybatis.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import lombok.extern.slf4j.Slf4j;
 import me.pi.admin.common.util.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
  * @since 2022-08-30
  */
 @Component
+@Slf4j
 public class SecurityMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {

@@ -39,6 +39,10 @@ public class ApproveCompleteDTO {
     @NotNull(message = "流程实例 ID 不能为空")
     private String processInstanceId;
     /**
+     * 表单 id
+     */
+    private String formId;
+    /**
      * 审批意见
      */
     @NotNull(message = "审批意见不能为空")
@@ -47,6 +51,7 @@ public class ApproveCompleteDTO {
      * 流程变量
      */
     private Map<String, Object> variables;
+    private String outcome;
     /**
      * 抄送人
      */

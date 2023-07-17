@@ -33,6 +33,10 @@ public class ActReForm extends BaseEntity {
      */
     private String name;
     /**
+     * 表单 key
+     */
+    private String formKey;
+    /**
      * 是否内置
      */
     @TableField("is_built_in")

@@ -53,6 +53,7 @@ management:
         include: flowable,info
 
 flowable:
+  database-schema-update: false
   # 是否需要自动部署流程定义。
   check-process-definitions: false
   cmmn:
@@ -60,8 +61,6 @@ flowable:
   content:
     enabled: false
   dmn:
-    enabled: false
-  form:
     enabled: false
   idm:
     enabled: false
